@@ -2,28 +2,45 @@
 <html>
     <head>
         <title>DOM Mutation Applier test</title>
+        <style>
+            main {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            textarea {
+                width: 100%;
+                height: 20em;
+            }
+        </style>
     </head>
     <body>
         <h1>DOM Mutation Applier test</h1>
-        <section>
-            <p>
-                Does this work? Let's see?
-            </p>
-            <button class="add">Add a thing!</button>
-            <button class="remove">Remove a thing!</button>
-        </section>   
+        <main>
+            <section class="modify">
+                <p>
+                    Does this work? Let's see?
+                </p>
+                <button class="add">Add a thing!</button>
+                <button class="remove">Remove a thing!</button>
+            </section>
+            <section>
+                <h2>Mutation Log</h2>
+                <textarea class="log"></textarea>            
+            </section>   
+    </main>
         <script type="module">
             import EnhancedMutationRecord from "./index.mjs";
 
             const copy = document.cloneNode( true );
             
-            const section = document.querySelector('section');
+            const section = document.querySelector('section.modify');
             const observer = new MutationObserver( (records, observer) => {
                 const emr = EnhancedMutationRecord.fromMutationRecord( records );
+                document.querySelector('.log').value += JSON.stringify(emr, null, 2)
                 emr.mutate( copy );
-                console.log( copy );
             });
-            observer.observe(section,{ childList: true, subtree: true })
+            observer.observe(section, { childList: true, subtree: true })
 
             document.querySelector('button.add').addEventListener('click', () => {
                 const p = document.createElement('p');
