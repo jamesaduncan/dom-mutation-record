@@ -7,3 +7,5 @@ module in HTML, rather than precompiled and bundled and all that jazz.
 
 I had started to write this on my own, and then I encountered Meeshkan's code. I've changed the licensing to MIT to
 reflect that fact.
+
+The biggest change is that you can now pass any compatible DOM implementation to the mutate() method and it should work.

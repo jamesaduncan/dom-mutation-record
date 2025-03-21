@@ -144,7 +144,7 @@ class EnhancedMutationRecord {
         const document = aDocument; //this.dom.window.document;
         let node;
         try {
-            node = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            node = document.evaluate(xpath, document, null, 9, null).singleNodeValue; // XPathResult.FIRST_ORDERED_NODE_TYPE
         }
         catch (error) {
             node = null;
@@ -232,10 +232,10 @@ class EnhancedMutationRecord {
                     newNodeInDom = document.createElement(addedNode === null || addedNode === void 0 ? void 0 : addedNode.tagName);
                 }
             }
-            else if ((addedNode === null || addedNode === void 0 ? void 0 : addedNode.type) === NodeType.TEXT_NODE) {
+            else if ((addedNode === null || addedNode === void 0 ? void 0 : addedNode.type) === Node.TEXT_NODE) {
                 newNodeInDom = document.createTextNode((addedNode === null || addedNode === void 0 ? void 0 : addedNode.value) || '');
             }
-            else if ((addedNode === null || addedNode === void 0 ? void 0 : addedNode.type) === NodeType.COMMENT_NODE) {
+            else if ((addedNode === null || addedNode === void 0 ? void 0 : addedNode.type) === Node.COMMENT_NODE) {
                 newNodeInDom = document.createComment((addedNode === null || addedNode === void 0 ? void 0 : addedNode.value) || '');
             }
             else {
