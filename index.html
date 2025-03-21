@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>DOM Mutation Applier test</title>
+        <title>Enhanced Mutation Record</title>
         <style>
             main {
                 display: grid;
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: .75fr 1fr;
             }
             
             textarea {
@@ -15,14 +15,34 @@
         </style>
     </head>
     <body>
-        <h1>DOM Mutation Applier test</h1>
+        <h1>Enhanced Mutation Record test</h1>
         <main>
-            <section class="modify">
+            <section>
                 <p>
-                    Does this work? Let's see?
+                    To use dom-mutation-record, import the module
+                    <pre>import EnhancedMutationRecord from "https://jamesaduncan.github.io/dom-mutation-record/index.mjs";</pre>
                 </p>
-                <button class="add">Add a thing!</button>
-                <button class="remove">Remove a thing!</button>
+                <p>
+                    If you have a JSON serialized EnhancedMutationRecord, you can
+                    turn it back into an EnhancedMutationRecord with the <code>fromJSON</code>
+                    static method.
+                    <pre>const emr = EnhancedMutationRecord.fromJSON( someJSON );</pre>
+                </p>
+                <p>
+                    If you have an array of MutationRecord objects, like that generated from a
+                    MutationObserver, then you can create an EnhancedMutationRecord using the
+                    <code>fromMutationRecord</code> static method.
+                    <pre>const emr = EnhancedMutationRecord.fromMutationRecord( mutationRecords );</pre>
+                </p>
+                <p>
+                    You can apply an EnhancedMutationRecord object to a document by using the <code>mutate</code>
+                    method, and passing the DOM to be modified to it.
+                    <pre>emr.mutate( aDocument )</pre>
+                </p>
+                <section class="modify">
+                    <button class="add">Add a thing!</button>
+                    <button class="remove">Remove a thing!</button>
+                </section>
             </section>
             <section>
                 <h2>Mutation Log</h2>
@@ -38,7 +58,10 @@
             const observer = new MutationObserver( (records, observer) => {
                 const emr = EnhancedMutationRecord.fromMutationRecord( records );
                 document.querySelector('.log').value += "\n" + JSON.stringify(emr, null, 2)
-                emr.mutate( copy );
+                const stringified = JSON.stringify( emr );
+                const emrFromStringified = EnhancedMutationRecord.fromJSON( stringified );
+                emrFromStringified.mutate( copy );
+                console.log( copy )
             });
             observer.observe(section, { childList: true, subtree: true })
 

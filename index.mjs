@@ -86,6 +86,17 @@ class EnhancedMutationRecord {
         this.sheets = []; //styleSheets || [];
     }
     
+    toJSON() {
+        return { mutations: this.mutations }
+    }
+
+    static fromJSON( aJSONString ) {
+        const self = new this();
+        const obj  = JSON.parse( aJSONString );        
+        Object.assign(self, obj);
+        return self;
+    }
+
     static fromMutationRecord( mutationRecords ) {
         const self = new this();
         self.mutations = this.serializeMutations( mutationRecords );
