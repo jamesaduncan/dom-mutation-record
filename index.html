@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DOM Mutation Applier test</title>
+    </head>
+    <body>
+        <h1>DOM Mutation Applier test</h1>
+        <section>
+            <p>
+                Does this work? Let's see?
+            </p>
+            <button class="add">Add a thing!</button>
+            <button class="remove">Remove a thing!</button>
+        </section>   
+        <script type="module">
+            import EnhancedMutationRecord from "./index.mjs";
+
+            const copy = document.cloneNode( true );
+            
+            const section = document.querySelector('section');
+            const observer = new MutationObserver( (records, observer) => {
+                const emr = EnhancedMutationRecord.fromMutationRecord( records );
+                emr.mutate( copy );
+                console.log( copy );
+            });
+            observer.observe(section,{ childList: true, subtree: true })
+
+            document.querySelector('button.add').addEventListener('click', () => {
+                const p = document.createElement('p');
+                p.innerText = "added a paragraph";
+                section.appendChild( p );
+            })
+
+            document.querySelector('button.remove').addEventListener('click', () => {
+                const p = section.querySelector('p:last-of-type');
+                p.parentNode.removeChild(p)
+            })
+
+        </script>
+    </body>
+</html>
