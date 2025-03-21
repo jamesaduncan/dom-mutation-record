@@ -37,7 +37,7 @@
             const section = document.querySelector('section.modify');
             const observer = new MutationObserver( (records, observer) => {
                 const emr = EnhancedMutationRecord.fromMutationRecord( records );
-                document.querySelector('.log').value += JSON.stringify(emr, null, 2)
+                document.querySelector('.log').value += "\n" + JSON.stringify(emr, null, 2)
                 emr.mutate( copy );
             });
             observer.observe(section, { childList: true, subtree: true })
